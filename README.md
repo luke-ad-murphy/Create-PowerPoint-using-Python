@@ -16,8 +16,8 @@ All Python code is contained in a single .py file: xxx.py. This file calls the c
 
 1. Powerpoint template
 2. Image files for:
-	i. Measurements legend - XXX.png
-	ii. RSRP and RSSNR legend - XXX.png
-	iii. Hexbin size guide - XXX.png
+	1. Measurements legend - XXX.png
+	2. RSRP and RSSNR legend - XXX.png
+	3. Hexbin size guide - XXX.png
 
 ---
