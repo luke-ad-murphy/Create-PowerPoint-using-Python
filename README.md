@@ -16,10 +16,10 @@ This file calls the config file that contains 3 parameters that end users must p
 
 ## The process requires the following support files to produce output:
 
-1. Powerpoint template (found in the Powerpoint_template folder)
+1. Powerpoint template (found in the Powerpoint_templates folder)
 2. Image files for (found in the 'Images' folder.):
-	1. Measurements legend - XXX.png
-	2. RSRP and RSSNR legend - XXX.png
-	3. Hexbin size guide - XXX.png
+	1. Measurements legend - Measurement_colour_scale.png
+	2. RSRP and RSSNR legend - RF_colour_scale.png
+	3. Hexbin size guide - Internal_hexbin_size_v2.png
 
 ---
