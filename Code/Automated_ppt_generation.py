@@ -603,7 +603,10 @@ for i, building_id in enumerate(BOI_list):
     
     # apply the lists to df
     Tot_meas_XY['carrier'] = np.select(conditions, choices, default='Other')
-    
+
+    # convert top floats
+    Tot_meas_XY['QOS_RSSNR'] = Tot_meas_XY['QOS_RSSNR'].astype(float)    
+    Tot_meas_XY['QOS_RSRP'] = Tot_meas_XY['QOS_RSSNR'].astype(float)    
     
     # Count measurements per xy bin
     xy_meas = Tot_meas_XY.groupby(['uid']).\
@@ -726,6 +729,9 @@ for i, building_id in enumerate(BOI_list):
     Tot_RF['rsrp25Pc_colour'] = pd.cut(Tot_RF['rsrp25Pc'], bins=rsrp_bins, labels=rsrp_labels)
     Tot_RF['rssnrMean_colour'] = pd.cut(Tot_RF['rssnrMean'], bins=rssnr_bins, labels=rssnr_labels)
     Tot_RF['rssnr25Pc_colour'] = pd.cut(Tot_RF['rssnr25Pc'], bins=rssnr_bins, labels=rssnr_labels)
+
+    # Remove rows containing null Mean RSSNR (as proxy denoting no analysis is avaialble)
+    Tot_RF = Tot_RF[Tot_RF['rssnrMean'].notna()]
     
     # Create bar charts
     def building_RF_chart(attribute, clr, title, maxval, minval, fiddler): 
