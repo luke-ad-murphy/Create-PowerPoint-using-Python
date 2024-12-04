@@ -606,7 +606,7 @@ for i, building_id in enumerate(BOI_list):
 
     # convert to floats
     Tot_meas_XY['QOS_RSSNR'] = Tot_meas_XY['QOS_RSSNR'].astype(float)    
-    Tot_meas_XY['QOS_RSRP'] = Tot_meas_XY['QOS_RSSNR'].astype(float)    
+    Tot_meas_XY['QOS_RSRP'] = Tot_meas_XY['QOS_RSRP'].astype(float)  
     
     # Count measurements per xy bin
     xy_meas = Tot_meas_XY.groupby(['uid']).\
