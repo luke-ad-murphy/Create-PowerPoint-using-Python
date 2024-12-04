@@ -603,7 +603,10 @@ for i, building_id in enumerate(BOI_list):
     
     # apply the lists to df
     Tot_meas_XY['carrier'] = np.select(conditions, choices, default='Other')
-    
+
+    # convert to floats
+    Tot_meas_XY['QOS_RSSNR'] = Tot_meas_XY['QOS_RSSNR'].astype(float)    
+    Tot_meas_XY['QOS_RSRP'] = Tot_meas_XY['QOS_RSSNR'].astype(float)    
     
     # Count measurements per xy bin
     xy_meas = Tot_meas_XY.groupby(['uid']).\
@@ -726,6 +729,9 @@ for i, building_id in enumerate(BOI_list):
     Tot_RF['rsrp25Pc_colour'] = pd.cut(Tot_RF['rsrp25Pc'], bins=rsrp_bins, labels=rsrp_labels)
     Tot_RF['rssnrMean_colour'] = pd.cut(Tot_RF['rssnrMean'], bins=rssnr_bins, labels=rssnr_labels)
     Tot_RF['rssnr25Pc_colour'] = pd.cut(Tot_RF['rssnr25Pc'], bins=rssnr_bins, labels=rssnr_labels)
+
+    # Remove rows containing null Mean RSSNR (as proxy denoting no analysis is avaialble)
+    Tot_RF = Tot_RF[Tot_RF['rssnrMean'].notna()]
     
     # Create bar charts
     def building_RF_chart(attribute, clr, title, maxval, minval, fiddler): 
@@ -1137,50 +1143,64 @@ for i, building_id in enumerate(BOI_list):
     p = tf.add_paragraph()
     p.text = ''
     
+    # Number of rows in table to analyse
+    carriers = len(Tot_RF.index)
+ 
     p = tf.add_paragraph()
-    if ref_df.at['Carrier 1', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 1', 'rssnr25Pc'] <= 0:
-        p.text = "•" + " Carrier 1 demonstrates both coverage and capacity issues at peak times."
-    elif ref_df.at['Carrier 1', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 1', 'rssnr25Pc'] > 0:
-        p.text = "•" + " Carrier 1 demonstrates coverage issues at peak times."
-    elif ref_df.at['Carrier 1', 'rsrp25Pc'] > -108 and ref_df.at['Carrier 1', 'rssnr25Pc'] <= 0:
-        p.text = "•" + " Carrier 1 demonstrates capacity issues at peak times."       
+    if carriers >= 1:
+        if ref_df.at['Carrier 1', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 1', 'rssnr25Pc'] <= 0:
+            p.text = "•" + " Carrier 1 demonstrates both coverage and capacity issues at peak times."
+        elif ref_df.at['Carrier 1', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 1', 'rssnr25Pc'] > 0:
+            p.text = "•" + " Carrier 1 demonstrates coverage issues at peak times."
+        elif ref_df.at['Carrier 1', 'rsrp25Pc'] > -108 and ref_df.at['Carrier 1', 'rssnr25Pc'] <= 0:
+            p.text = "•" + " Carrier 1 demonstrates capacity issues at peak times."       
+        else:
+            p.text = "•" + " Carrier 1 has no apparent coverage or capacity issues at peak times."
     else:
-        p.text = "•" + " Carrier 1 has no apparent coverage or capacity issues at peak times."
+        p.text = "•" + " No data available for carrier 1."  
     p.font.name = 'Avenir Next LT Pro'
     p.font.size = Pt(14)
-    p.font.bold = True
-    
+    p.font.bold = True 
     p = tf.add_paragraph()
     p.text = ''
     
+    
     p = tf.add_paragraph()
-    if ref_df.at['Carrier 2', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 2', 'rssnr25Pc'] <= 0:
-        p.text = "•" + " Carrier 2 demonstrates both coverage and capacity issues at peak times."
-    elif ref_df.at['Carrier 2', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 2', 'rssnr25Pc'] > 0:
-        p.text = "•" + " Carrier 2 demonstrates coverage issues at peak times."
-    elif ref_df.at['Carrier 2', 'rsrp25Pc'] > -108 and ref_df.at['Carrier 2', 'rssnr25Pc'] <= 0:
-        p.text = "•" + " Carrier 2 demonstrates capacity issues at peak times."       
+    if carriers >= 2:
+        if ref_df.at['Carrier 2', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 2', 'rssnr25Pc'] <= 0:
+            p.text = "•" + " Carrier 2 demonstrates both coverage and capacity issues at peak times."
+        elif ref_df.at['Carrier 2', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 2', 'rssnr25Pc'] > 0:
+            p.text = "•" + " Carrier 2 demonstrates coverage issues at peak times."
+        elif ref_df.at['Carrier 2', 'rsrp25Pc'] > -108 and ref_df.at['Carrier 2', 'rssnr25Pc'] <= 0:
+            p.text = "•" + " Carrier 2 demonstrates capacity issues at peak times."       
+        else:
+            p.text = "•" + " Carrier 2 has no apparent coverage or capacity issues at peak times."
     else:
-        p.text = "•" + " Carrier 2 has no apparent coverage or capacity issues at peak times."
+        p.text = "•" + " No data available for carrier 2."  
     p.font.name = 'Avenir Next LT Pro'
     p.font.size = Pt(14)
-    p.font.bold = True
+    p.font.bold = True 
+    p = tf.add_paragraph()
+    p.text = ''  
     
+    
+    p = tf.add_paragraph()
+    if carriers >= 3:
+        if ref_df.at['Carrier 3', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 3', 'rssnr25Pc'] <= 0:
+            p.text = "•" + " Carrier 3 demonstrates both coverage and capacity issues at peak times."
+        elif ref_df.at['Carrier 3', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 3', 'rssnr25Pc'] > 0:
+            p.text = "•" + " Carrier 3 demonstrates coverage issues at peak times."
+        elif ref_df.at['Carrier 3', 'rsrp25Pc'] > -108 and ref_df.at['Carrier 3', 'rssnr25Pc'] <= 0:
+            p.text = "•" + " Carrier 3 demonstrates capacity issues at peak times."       
+        else:
+            p.text = "•" + " Carrier 3 has no apparent coverage or capacity issues at peak times."
+    else:
+        p.text = "•" + " No data available for carrier 3."  
+    p.font.name = 'Avenir Next LT Pro'
+    p.font.size = Pt(14)
+    p.font.bold = True 
     p = tf.add_paragraph()
     p.text = ''
-    
-    p = tf.add_paragraph()
-    if ref_df.at['Carrier 3', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 3', 'rssnr25Pc'] <= 0:
-        p.text = "•" + " Carrier 3 demonstrates both coverage and capacity issues at peak times."
-    elif ref_df.at['Carrier 3', 'rsrp25Pc'] <= -108 and ref_df.at['Carrier 3', 'rssnr25Pc'] > 0:
-        p.text = "•" + " Carrier 3 demonstrates coverage issues at peak times."
-    elif ref_df.at['Carrier 3', 'rsrp25Pc'] > -108 and ref_df.at['Carrier 3', 'rssnr25Pc'] <= 0:
-        p.text = "•" + " Carrier 3 demonstrates capacity issues at peak times."       
-    else:
-        p.text = "•" + " Carrier 3 has no apparent coverage or capacity issues at peak times."
-    p.font.name = 'Avenir Next LT Pro'
-    p.font.size = Pt(14)
-    p.font.bold = True
     
     
     # apply RSRP mean image
