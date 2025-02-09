@@ -2,6 +2,7 @@
 This is a company specific example of creating ths output, and due to commercial sensitivity, underlying data files cannot be provided.
 However, the script provided helps to frame setting up such a process - to save time/resource in compiling updated and formulated PowerPoint insights packs for stakeholders.
 
+The script is designed to run using the supporting config file, so that users can call the process using the command line from their own machine.
 
 # Files and requirements to run process to create building analysis powerpoint
 
