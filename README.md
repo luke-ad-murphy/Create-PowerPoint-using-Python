@@ -1,10 +1,15 @@
+# NB
+This is a company specific example of creating ths output, and due to commercial sensitivity, underlying data files cannot be provided.
+However, the script provided helps to frame setting up such a process - to save time/resource in compiling updated and formulated PowerPoint insights packs for stakeholders.
+
+
 # Files and requirements to run process to create building analysis powerpoint
 
 ---
 
 ## Python code and associated artefacts to produce automated building analysis report (powerpoint)
 
-All Python code is contained in a single .py file: xxx.py. Python script and config file are found in the 'Code' folder.
+All Python code is contained in a single .py script.
 
 This file calls the config file that contains 3 parameters that end users must pass:
 
